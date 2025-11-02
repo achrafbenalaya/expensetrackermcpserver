@@ -3,3 +3,6 @@
 # Manually managing azure-functions-worker may cause unexpected issues
 
 azure-functions
+# Dependencies for ExpenseTracker (no pandas)
+azure-storage-blob==12.23.1
+openpyxl==3.1.2
