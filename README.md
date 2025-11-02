@@ -1,3 +1,105 @@
+# Expense Tracker MCP Server
+
+## Overview
+
+This repository contains an **Expense Tracker** implemented as an MCP (Model Context Protocol) server using Azure Functions (Python, v2 programming model). The Expense Tracker allows you to manage, analyze, and summarize your expenses via API endpoints, making it easy to integrate with other tools or automate your personal or business expense management workflows.
+
+## Features
+
+- **Add new expenses**: Log new expense entries with details such as date, amount, category, and description.
+- **Auto-categorize expenses**: Automatically assign categories to expenses based on their descriptions.
+- **Summarize spending**: Generate summaries of your spending between two dates, or by month and category.
+- **Retrieve expenses**: Query expenses filtered by month and/or category.
+- **Get remaining budget**: Calculate your remaining budget for a given month.
+
+## Tools & Scripts
+
+- `src/expense_tracker_nopandas.py`: Core logic for expense tracking without using pandas.
+- `scripts/make_expenses_excel.py`: Script to convert sample CSV expenses to Excel format for testing or import.
+- `expenses.sample.csv`: Example CSV file with sample expenses.
+
+## How to Use
+
+### 1. Local Development
+
+1. **Install dependencies**:
+     ```sh
+     pip install -r src/requirements.txt
+     ```
+
+2. **Run the Azure Function locally**:
+     ```sh
+     cd src
+     func host start
+     ```
+
+3. **Test the endpoints** using tools like `curl`, `httpie`, or Postman. Example:
+     ```sh
+     curl -X POST http://localhost:7071/api/add-expense \
+         -H "Content-Type: application/json" \
+         -d '{"date": "2025-11-01", "amount": 50, "category": "Food", "description": "Lunch"}'
+     ```
+
+### 2. Deploy to Azure
+
+1. **Provision resources and deploy** using [Azure Developer CLI (azd)](https://learn.microsoft.com/azure/developer/azure-developer-cli/):
+     ```sh
+     azd up
+     ```
+     This will provision Azure resources and deploy the function app.
+
+2. **Find your function app URL** in the Azure Portal or from the output of `azd up`.
+
+3. **Call the endpoints** as above, replacing `localhost:7071` with your Azure Function App URL.
+
+### 3. Example API Usage
+
+- **Add an expense**
+    ```json
+    POST /api/add-expense
+    {
+        "date": "2025-11-01",
+        "amount": 50,
+        "category": "Food",
+        "description": "Lunch"
+    }
+    ```
+
+- **Summarize spending**
+    ```json
+    POST /api/summarize-spending
+    {
+        "start_date": "2025-11-01",
+        "end_date": "2025-11-30"
+    }
+    ```
+
+- **Get remaining budget**
+    ```json
+    GET /api/get-remaining-budget?month=2025-11
+    ```
+
+## Sample Data
+
+Use `expenses.sample.csv` as a template for your own expenses. You can convert it to Excel using the provided script:
+
+```sh
+python scripts/make_expenses_excel.py expenses.sample.csv expenses.xlsx
+```
+
+## Requirements
+
+- Python 3.9+
+- Azure Functions Core Tools
+- Azure Developer CLI (azd)
+
+## Contributing
+
+Contributions are welcome! Please open issues or submit pull requests for improvements or bug fixes.
+
+## License
+
+See [LICENSE.md](LICENSE.md).
 <!--
 ---
 name: Remote MCP with Azure Functions (Python)
