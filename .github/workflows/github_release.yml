@@ -1,14 +1,17 @@
 name: Create GitHub Release
+
 on:
   push:
     tags:
       - "v*"
+
 jobs:
   create-release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: read  # Add this for generateReleaseNotes
+      pull-requests: read
+    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
